@@ -46,6 +46,9 @@ RUN curl -L https://github.com/glpi-project/glpi/releases/download/11.0.7/glpi-1
     && tar -xzf /tmp/glpi.tgz -C /var/www/html --strip-components=1 \
     && rm /tmp/glpi.tgz
 
+# Copier la configuration Apache
+COPY glpi.conf /etc/apache2/sites-available/000-default.conf
+
 # Permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
