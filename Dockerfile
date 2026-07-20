@@ -36,7 +36,9 @@ RUN docker-php-ext-install \
     bz2 \
     exif \
     soap \
-    bcmath
+    bcmath \
+    mbstring \
+    fileinfo
 
 # Activation des modules Apache
 RUN a2enmod rewrite headers expires
@@ -47,6 +49,11 @@ RUN curl -L https://github.com/glpi-project/glpi/releases/download/11.0.7/glpi-1
     && tar -xzf /tmp/glpi.tgz -C /var/www/html --strip-components=1 \
     && rm /tmp/glpi.tgz
 
+RUN echo "RewriteBase /" > /var/www/html/public/.htaccess \
+    && echo "RewriteEngine On" >> /var/www/html/public/.htaccess \
+    && echo "RewriteCond %{REQUEST_FILENAME} !-f" >> /var/www/html/public/.htaccess \
+    && echo "RewriteRule ^(.*)$ index.php [QSA,L]" >> /var/www/html/public/.htaccess
+    
 # Copier la configuration Apache
 COPY glpi.conf /etc/apache2/sites-available/000-default.conf
 
