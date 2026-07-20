@@ -35,7 +35,8 @@ RUN docker-php-ext-install \
     opcache \
     bz2 \
     exif \
-    soap
+    soap \
+    bcmath
 
 # Activation des modules Apache
 RUN a2enmod rewrite headers expires
