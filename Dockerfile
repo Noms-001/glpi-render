@@ -61,6 +61,8 @@ COPY glpi.conf /etc/apache2/sites-available/000-default.conf
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
+RUN grep -R "Access-Control-Allow-Origin" /var/www/html/src /var/www/html/public /var/www/html/inc || true
+
 # Répertoire de travail
 WORKDIR /var/www/html
 
