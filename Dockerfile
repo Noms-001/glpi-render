@@ -49,6 +49,13 @@ RUN curl -L https://github.com/glpi-project/glpi/releases/download/11.0.7/glpi-1
     && tar -xzf /tmp/glpi.tgz -C /var/www/html --strip-components=1 \
     && rm /tmp/glpi.tgz
 
+# Correction CORS GLPI API
+RUN sed -i 's/header("Access-Control-Allow-Origin: \\*");/header("Access-Control-Allow-Origin: https:\/\/glpi-vue.vercel.app");/' \
+    /var/www/html/src/Glpi/Api/API.php
+
+RUN sed -i "s/withHeader('Access-Control-Allow-Origin', '\\*')/withHeader('Access-Control-Allow-Origin', 'https:\/\/glpi-vue.vercel.app')/" \
+    /var/www/html/src/Glpi/Api/HL/Middleware/SecurityResponseMiddleware.php
+
 RUN echo "RewriteBase /" > /var/www/html/public/.htaccess \
     && echo "RewriteEngine On" >> /var/www/html/public/.htaccess \
     && echo "RewriteCond %{REQUEST_FILENAME} !-f" >> /var/www/html/public/.htaccess \
