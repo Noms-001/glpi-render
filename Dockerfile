@@ -64,6 +64,8 @@ RUN chown -R www-data:www-data /var/www/html \
 # Répertoire de travail
 WORKDIR /var/www/html
 
+RUN grep -R "Access-Control-Allow-Origin" /etc/apache2 /var/www/html || true
+
 EXPOSE 80
 
 COPY entrypoint.sh /entrypoint.sh
