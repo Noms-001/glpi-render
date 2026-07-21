@@ -50,7 +50,7 @@ RUN curl -L https://github.com/glpi-project/glpi/releases/download/11.0.7/glpi-1
     && rm /tmp/glpi.tgz
 
 # Correction CORS GLPI API
-RUN sed -i 's/header("Access-Control-Allow-Origin: \\*");/header("Access-Control-Allow-Origin: https:\/\/glpi-vue.vercel.app");/' \
+RUN sed -i 's#Access-Control-Allow-Origin: \*#Access-Control-Allow-Origin: https://glpi-vue.vercel.app#g' \
     /var/www/html/src/Glpi/Api/API.php
 
 RUN sed -i "s/withHeader('Access-Control-Allow-Origin', '\\*')/withHeader('Access-Control-Allow-Origin', 'https:\/\/glpi-vue.vercel.app')/" \
