@@ -49,10 +49,7 @@ RUN curl -L https://github.com/glpi-project/glpi/releases/download/11.0.7/glpi-1
     && tar -xzf /tmp/glpi.tgz -C /var/www/html --strip-components=1 \
     && rm /tmp/glpi.tgz
 
-RUN echo "RewriteBase /" > /var/www/html/public/.htaccess \
-    && echo "RewriteEngine On" >> /var/www/html/public/.htaccess \
-    && echo "RewriteCond %{REQUEST_FILENAME} !-f" >> /var/www/html/public/.htaccess \
-    && echo "RewriteRule ^(.*)$ index.php [QSA,L]" >> /var/www/html/public/.htaccess
+RUN ls -la /var/www/html/public && cat /var/www/html/public/.htaccess
     
 # Copier la configuration Apache
 COPY glpi.conf /etc/apache2/sites-available/000-default.conf
@@ -63,8 +60,6 @@ RUN chown -R www-data:www-data /var/www/html \
 
 # Répertoire de travail
 WORKDIR /var/www/html
-
-RUN grep -R "Access-Control-Allow-Origin" /etc/apache2 /var/www/html || true
 
 EXPOSE 80
 
