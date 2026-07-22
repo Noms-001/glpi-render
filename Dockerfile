@@ -43,8 +43,6 @@ RUN docker-php-ext-install \
 # Activation des modules Apache
 RUN a2enmod rewrite headers expires
 
-RUN php -i | grep -i "mysqlnd"
-
 # Télécharger GLPI 11
 RUN curl -L https://github.com/glpi-project/glpi/releases/download/11.0.7/glpi-11.0.7.tgz \
     -o /tmp/glpi.tgz \
@@ -56,6 +54,36 @@ COPY certs/ca.pem /usr/local/share/ca-certificates/aiven-ca.crt
 
 # Installer le certificat dans le système
 RUN update-ca-certificates
+
+RUN cat > /var/www/html/public/testdb.php <<'EOF'
+<?php
+
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+$mysqli = mysqli_init();
+
+mysqli_ssl_set(
+    $mysqli,
+    NULL,
+    NULL,
+    "/usr/local/share/ca-certificates/aiven-ca.crt",
+    NULL,
+    NULL
+);
+
+mysqli_real_connect(
+    $mysqli,
+    getenv("DB_HOST"),
+    getenv("DB_USER"),
+    getenv("DB_PASSWORD"),
+    getenv("DB_NAME"),
+    getenv("DB_PORT"),
+    NULL,
+    MYSQLI_CLIENT_SSL
+);
+
+echo "Connexion SSL OK";
+EOF
 
 # Correction CORS GLPI API
 RUN sed -i 's#Access-Control-Allow-Origin: \*#Access-Control-Allow-Origin: https://glpi-vue.vercel.app#g' \

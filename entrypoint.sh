@@ -36,6 +36,9 @@ class DB extends DBmysql {
    public \$use_utf8mb4 = true;
    public \$allow_datetime = false;
    public \$allow_signed_keys = false;
+
+   public \$dbssl = true;
+   public \$dbsslca = '/usr/local/share/ca-certificates/aiven-ca.crt';
 }
 EOF
 
