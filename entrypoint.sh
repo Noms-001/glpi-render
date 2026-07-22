@@ -46,6 +46,12 @@ echo "config_db.php créé."
 
 fi
 
+# Générer la clé de sécurité si elle n'existe pas
+if [ ! -f /var/www/html/config/security.key ]; then
+    echo "Génération de la clé de sécurité..."
+    php /var/www/html/bin/console security:change_key --no-interaction
+fi
+
 chown -R www-data:www-data /var/www/html
 
 exec apache2-foreground
