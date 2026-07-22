@@ -21,27 +21,26 @@ mkdir -p /var/www/html/files/_uploads
 mkdir -p /var/www/html/files/_inventories
 mkdir -p /var/www/html/marketplace
 
-# # Générer config_db.php si absent
-# if [ ! -f /var/www/html/config/config_db.php ]; then
+# Générer config_db.php si absent
+if [ ! -f /var/www/html/config/config_db.php ]; then
 
-# cat > /var/www/html/config/config_db.php <<EOF
-# <?php
-# class DB extends DBmysql {
+cat > /var/www/html/config/config_db.php <<EOF
+<?php
+class DB extends DBmysql {
 
-#    public \$dbhost     = '${DB_HOST}';
-#    public \$dbport     = '${DB_PORT}';
-#    public \$dbdefault  = '${DB_NAME}';
-#    public \$dbuser     = '${DB_USER}';
-#    public \$dbpassword = '${DB_PASSWORD}';
+   public \$dbhost     = '${DB_HOST}';
+   public \$dbport     = '${DB_PORT}';
+   public \$dbdefault  = '${DB_NAME}';
+   public \$dbuser     = '${DB_USER}';
+   public \$dbpassword = '${DB_PASSWORD}';
 
-# }
-# EOF
+}
+EOF
 
-# echo "config_db.php créé."
+echo "config_db.php créé."
 
-# fi
+fi
 
 chown -R www-data:www-data /var/www/html
-chmod -R 755 /var/www/html
 
 exec apache2-foreground
