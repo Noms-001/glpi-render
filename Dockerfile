@@ -43,11 +43,19 @@ RUN docker-php-ext-install \
 # Activation des modules Apache
 RUN a2enmod rewrite headers expires
 
+RUN php -i | grep -i "mysqlnd"
+
 # Télécharger GLPI 11
 RUN curl -L https://github.com/glpi-project/glpi/releases/download/11.0.7/glpi-11.0.7.tgz \
     -o /tmp/glpi.tgz \
     && tar -xzf /tmp/glpi.tgz -C /var/www/html --strip-components=1 \
     && rm /tmp/glpi.tgz
+
+# Copier le certificat Aiven
+COPY certs/ca.pem /usr/local/share/ca-certificates/aiven-ca.crt
+
+# Installer le certificat dans le système
+RUN update-ca-certificates
 
 # Correction CORS GLPI API
 RUN sed -i 's#Access-Control-Allow-Origin: \*#Access-Control-Allow-Origin: https://glpi-vue.vercel.app#g' \

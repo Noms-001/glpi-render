@@ -28,12 +28,14 @@ cat > /var/www/html/config/config_db.php <<EOF
 <?php
 class DB extends DBmysql {
 
-   public \$dbhost     = '${DB_HOST}';
-   public \$dbport     = '${DB_PORT}';
-   public \$dbdefault  = '${DB_NAME}';
-   public \$dbuser     = '${DB_USER}';
+   public \$dbhost = '${DB_HOST}:${DB_PORT}';
+   public \$dbuser = '${DB_USER}';
    public \$dbpassword = '${DB_PASSWORD}';
+   public \$dbdefault = '${DB_NAME}';
 
+   public \$use_utf8mb4 = true;
+   public \$allow_datetime = false;
+   public \$allow_signed_keys = false;
 }
 EOF
 
